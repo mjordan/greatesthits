@@ -1,0 +1,6 @@
+greatesthits.proxy:
+  path: '/greatesthits'
+  defaults:
+    _controller: '\Drupal\greatesthits\Controller\GreatestHitsProxy::main'
+  requirements:
+    _permission: 'access content'

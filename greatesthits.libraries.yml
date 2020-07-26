@@ -1,0 +1,8 @@
+greatesthits:
+  version: 1.x
+  js:
+    js/greatesthits.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupalSettings

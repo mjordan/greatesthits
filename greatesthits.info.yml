@@ -1,0 +1,5 @@
+name: 'Greatest Hits'
+description: "Sends logging info to a Greatest Hits server."
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9

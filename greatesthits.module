@@ -1,0 +1,42 @@
+<?php
+
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @file
+ * GreatestHits module file.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Loads JavaScript that is fired asynchronously.
+ */
+function greatesthits_page_attachments(array &$attachments) {
+  global $base_url;
+  $current_path = \Drupal::service('path.current')->getPath();
+  if (preg_match('/\/node/', $current_path)) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node && $node instanceof \Drupal\Core\Entity\EntityInterface) {
+      $attachments['#attached']['library'][] = 'greatesthits/greatesthits';
+      $attachments['#attached']['drupalSettings']['greatesthits']['url'] = urlencode($base_url . '/node/' . $node->id());
+      $attachments['#attached']['drupalSettings']['greatesthits']['type'] = 'v';
+      $attachments['#attached']['drupalSettings']['greatesthits']['ip'] = \Drupal::request()->getClientIp();
+    }
+  }
+}
+
+/**
+ * Implements hook_file_download().
+ *
+ * @todo: This hook should only fire when the file is "downloaded", not
+ * when it is viewed in PDF.js, etc. Not sure if it's possible to do that.
+ */
+function greatesthits_file_download($uri) {
+  $request = \Drupal::request();
+  $greatesthits_url = 'http://10.0.2.2:3000/insert?url=' . urlencode($uri) . '&type=d&ip=' . \Drupal::request()->getClientIp();
+  // @todo: Make this request asyncronous so it doesn't things down.
+  \Drupal::httpClient()->get($greatesthits_url);
+  return NULL;
+}
+
