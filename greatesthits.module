@@ -33,9 +33,10 @@ function greatesthits_page_attachments(array &$attachments) {
  * when it is viewed in PDF.js, etc. Not sure if it's possible to do that.
  */
 function greatesthits_file_download($uri) {
+  $config = \Drupal::config('greatesthits.settings');
   $request = \Drupal::request();
-  $greatesthits_url = 'http://10.0.2.2:3000/insert?url=' . urlencode($uri) . '&type=d&ip=' . \Drupal::request()->getClientIp();
-  // @todo: Make this request asyncronous so it doesn't things down.
+  $greatesthits_url = $config->get('greatesthits_server_baseurl') . '/insert?url=' . urlencode($uri) . '&type=d&ip=' . \Drupal::request()->getClientIp();
+  // @todo: Make this request asyncronous so it doesn't slow things down.
   \Drupal::httpClient()->get($greatesthits_url);
   return NULL;
 }

@@ -4,3 +4,11 @@ greatesthits.proxy:
     _controller: '\Drupal\greatesthits\Controller\GreatestHitsProxy::main'
   requirements:
     _permission: 'access content'
+greatesthits.settings:
+  path: '/admin/config/system/greatesthits'
+  defaults:
+    _form: '\Drupal\greatesthits\Plugin\Form\GreatestHitsSettingsForm'
+    _title: 'GreatestHits usage statistics'
+  requirements:
+    _permission: 'administer site configuration'
+

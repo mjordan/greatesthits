@@ -13,7 +13,7 @@ use Drupal\Core\Block\BlockBase;
  *
  * @Block(
  * id = "greatesthits_node_report",
- * admin_label = @Translation("GreatestHits for nodes"),
+ * admin_label = @Translation("GreatestHits count for the current node"),
  * )
  */
 class GreatestHitsNodeReportBlock extends BlockBase {
@@ -23,8 +23,10 @@ class GreatestHitsNodeReportBlock extends BlockBase {
   public function build() {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
-      $node_url = 'http://localhost:8000/node/' . $node->id();
-      $query = 'http://10.0.2.2:3000/read?url=' . urlencode($node_url);
+      global $base_url;
+      $config = \Drupal::config('greatesthits.settings');
+      $node_url = $base_url . '/node/' . $node->id();
+      $query = $config->get('greatesthits_server_baseurl') . '/read?url=' . urlencode($node_url);
       $response = \Drupal::httpClient()->get($query);
       $response_body = (string) $response->getBody();
       $hits = json_decode($response_body, TRUE);
