@@ -27,13 +27,21 @@ class GreatestHitsNodeReportBlock extends BlockBase {
       $config = \Drupal::config('greatesthits.settings');
       $node_url = $base_url . '/node/' . $node->id();
       $query = $config->get('greatesthits_server_baseurl') . '/read?url=' . urlencode($node_url);
-      $response = \Drupal::httpClient()->get($query);
-      $response_body = (string) $response->getBody();
-      $hits = json_decode($response_body, TRUE);
-      $count = count($hits['data']);
-      return [
-        '#markup' => '<span>' . $count . ' hits</span>',
-      ];
+      try {
+        $response = \Drupal::httpClient()->get($query);
+        $response_body = (string) $response->getBody();
+        $hits = json_decode($response_body, TRUE);
+        $count = count($hits['data']);
+        return [
+          '#markup' => '<span>' . $count . ' hits</span>',
+        ];
+      }
+      catch (ConnectException $e) {
+        $note = t("Sorry, can't connect to GreatestHits server at @server. Please report this!.", ['@server' => $config->get('greatesthits_server_baseurl')]);
+        return [
+          '#markup' => '<span>' . $note . ' hits</span>',
+        ];
+      }
     }
   }
 
