@@ -18,6 +18,8 @@ Proof of concept module for wiring up a Drupal instance to use a GreatestHits se
 
 Currently there is no configuration. This proof of concept is intended to be used on the Islandora Playbook, with the GreatestHits server running on the laptop running Ansible. In that case, the server's address i `10.0.2.2.`. Therefore, while this is still a basic proof of concept, the address of remote GreatestHits server is hard coded to `http://10.0.2.2:3000`.
 
+There is a block, "GreatestHits for nodes", that shows the number of hits recorded by GreatestHits for the current node.
+
 ## Current maintainer
 
 * [Mark Jordan](https://github.com/mjordan)
